@@ -5,10 +5,114 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <chrono>
+#include <thread>
+#include <conio.h>
+#include <random>
 
+bool validar_enteros(int valor, int rango_inferior, int rango_superior) //regresa true si el valor pertenece al rango, false si fuera
+{
+    if ((valor <= rango_superior) && (valor >= rango_inferior)) { return true; }
+    else return false;
+}
+
+int menu() {
+    string placeholder;
+    int op; //variable para ingresar la opcion a solicitar 
+    int menu_index = 1;
+    system("cls");
+    cout << "OPCIONES:\n";
+    cout << "Ingresar el equipo                    ----> " << menu_index++ << endl;
+    cout << "Ingresar marcadores de los encuentros ----> " << menu_index++ << endl;
+    cout << "Mostrar los encuentros                ----> " << menu_index++ << endl;
+    cout << "Mostrar los equipos                   ----> " << menu_index++ << endl; //preguntar de que grupo se quiere mostrar los equipos 
+    cout << "Motrar resultado de los encuentros    ----> " << menu_index++ << endl; //se debe mostrar los encuentros con el resultado del partido
+    cout << "Mostrar tabla de resultados           ----> " << menu_index++ << endl; //se debe mostrar POS,PJ,PG,PP,PE,GA,GE,PUNTOS
+    cout << "salir                                 ----> " << menu_index++ << endl;
+    cout << "Introduzca la opcion a alegir:"<<endl;
+    cin >> op;
+   
+    if(validar_enteros(op,1,7)) return op;
+    else
+    {
+        cout << " valor fuera de limites, intente nuevamente " << endl;
+        this_thread::sleep_for(chrono::milliseconds(2000));
+    }
+    
+}
+
+void ingresar_equipo(int cantidad, vector <equipos> *participantes, int *manifiesto[300]) {
+    if (cantidad==0)
+    {
+        redo: do
+        {
+            cout << "cantidad de equipos a ingresar?: ";
+            cin >> cantidad;
+            if (validar_enteros(cantidad, 1, 20)) { break; }
+            else
+            {
+                cout << " la cantidad ingresada debe ser un numero entre 1 y 20" << endl;
+            }
+
+        } while (true);
+
+    }
+    
+    for (int i = 0; i < cantidad; i++)
+    {
+        int id = rand() % 300 + 1;
+        string nombre;
+       char temp;
+       bool grupo;
+        cout << "id del equipo:"<< id <<endl;
+        cout << "nombre del equipo?" << endl;
+        cin >> nombre;
+        cout << "grupo al que pertenece? (a/b)" << endl;
+        cin >> temp;
+        if (temp == 'a') { grupo = true; }
+        else
+        {
+            grupo = false;
+        }
+        equipos inscripcion(nombre, grupo);
+        participantes->push_back(inscripcion);
+    }
+    cout << "desea agregar mas equipos? (y/n): ";
+    char repetir;
+    cin >> repetir;
+    if (repetir == 'y') { goto redo; }
+}
+
+void inicio(vector <equipos> participantes, int manifiesto[300]) {
+    cout << "por favor ingrese los participantes del evento para continuar" << endl;
+    cout << "--se necesita un minimo de 6 equipos--" << endl;
+    ingresar_equipo(6, &participantes, &manifiesto);
+}
+
+void mostrar(vector <equipos> participantes, int manifiesto[300])
+{
+    equipos temp();
+    for (int i =0 ; i < participantes.size(); i++)
+    {
+        temp = participantes.;
+    }
+}
+
+void mostrar_grupo() {
+
+}
+
+void mostrar_partidos() {
+
+}
+
+void mostrar_tabla() {
+
+
+}
 int main()
 {
-    /*
+    /*git
       menu
       ingresar equipo(nombre y grupo)
       buscar equipo por su nombre
@@ -19,104 +123,47 @@ int main()
       mostrar o listar ordenadamente 1=PJ 2=PG 3=PE 4=PP 5=GF 6=GE
 
 
-      • Ingresar los Equipos (nombre) y el Grupo al que pertenecen, se debe cuidar de una distribución equitativa.
-      • Buscar un Equipo por su nombre e indicar a que Grupo pertenece y en que posición ocupa de la Tabla Posiciones.
-      • Mostrar los diferentes encuentros que se dan en los diferentes equipos en cada Grupo (A y B).
-      • Ingresar los marcadores para cada encuentro (Equipo1 vs Equipo 2).
-      • Listar los Equipos de un determinado Grupo.
-      • Mostrar la Tabla (o listado) con los diferentes resultados (Equipo1: Goles 1, Equipo2: Goles2) de un Grupo en
+      â€¢ Ingresar los Equipos (nombre) y el Grupo al que pertenecen, se debe cuidar de una distribuciÃ³n equitativa.
+      â€¢ Buscar un Equipo por su nombre e indicar a que Grupo pertenece y en que posiciÃ³n ocupa de la Tabla Posiciones.
+      â€¢ Mostrar los diferentes encuentros que se dan en los diferentes equipos en cada Grupo (A y B).
+      â€¢ Ingresar los marcadores para cada encuentro (Equipo1 vs Equipo 2).
+      â€¢ Listar los Equipos de un determinado Grupo.
+      â€¢ Mostrar la Tabla (o listado) con los diferentes resultados (Equipo1: Goles 1, Equipo2: Goles2) de un Grupo en
       particular (para ello se le debe solicitar al usuario el Grupo a consultar)
-         • Mostar o listar todos los k equipos ordenandos por puntos totales, y sus respectivos atributos de juego (PJ, PG, PE,
+         â€¢ Mostar o listar todos los k equipos ordenandos por puntos totales, y sus respectivos atributos de juego (PJ, PG, PE,
       PP, GF, GE, Punto Totales).
       */
 
-    int op; //variable para ingresar la opcion a solicitar  
-    vector <equipos> grupoA; //vector que almacena los equipos del grupo A
-    vector <equipos> grupoB; //vector que almacena los qeuipos del gtupo B
-    string name;
-    bool group;
-    int aux[6] = { 0 };
-    int n; //cantidad de equipos del torneo
-
-    cout << "Ingrese la cantidad de equipos que participaran: ";
-    cin >> n;
-
-    cout << "OPCIONES:\n";
-    cout << "Ingresar el equipo                    ----> 1\n";
-    cout << "Buscar equipo                         ----> 2\n";
-    cout << "Ingresar marcadores de los encuentros ----> 3\n";
-    cout << "Mostrar los encuentros                ----> 4\n";
-    cout << "Mostrar los equipos                   ----> 5\n"; //preguntar de que grupo se quiere mostrar los equipos 
-    cout << "Motrar reslutado de los encuentros    ----> 6\n"; //se debe mostrar los encuentros con el resultado del partido
-    cout << "Mostrar tabla de resultados           ----> 7\n"; //se debe mostrar POS,PJ,PG,PP,PE,GA,GE,PUNTOS
-    cout << "Introduzca la opcion a alegir:\n";
-    cin >> op;
-
-    switch (op)
+    vector <equipos> participantes;
+    
+    int manifiesto[300] = { 0 };
+    int op;
+    do
     {
-    case 1:
-    {
-        cout << "Ingrese el nombre del equipo: ";
-        cin >> name;
+        if (participantes.size() < 6) inicio(participantes, manifiesto);
 
-        cout << "Ingrese el grupo del equipo '0 si es el grupo A / 1 si es el grupo B':";
-        cin >> group;
-
-        equipos equipo1(name, group);
-
-        if (group == false) {
-            grupoA.push_back(equipo1);
-        }
-        else { grupoB.push_back(equipo1); }
-
-        /*for (int i = 0; i < 6; i++)
+       op= menu();
+        switch (op)
         {
-            switch (i)
+        case 7:
+            cout << "Saliendo";
+            for (int i = 0; i < 3; i++)
             {
-            case 0:
-                cout << "Ingrese la cantidad de partidos jugados: ";
-                break;
-            case 1:
-                cout << "partidos ganados: ";
-                break;
-            case 2:
-                cout << "partidos perdidos: ";
-                break;
-            case 3:
-                cout << "partidos empatados: ";
-                break;
-            case 4:
-                cout << "goles a favor: ";
-                break;
-            case 5:
-                cout << "goles en contra: ";
-                break;
+                this_thread::sleep_for(chrono::milliseconds(1000));
+                cout << ".";
             }
-            cin >> aux[i];
+            return op;
+            break;
 
         }
-        break;
+    } while (true);
+   
+    
+    
 
-        equipo equipo1(name, group, aux);
-        equipos.push_back(equipo1);
-        equipo1.mostrar_nombre();
-        equipo1.mostrar_grupo();
-        */
-    }
+  
 
-    case 2:
-    {
-
-    }
-
-    case 3:
-    {
-
-    }
-
-    break;
-
-    }
+   
 
 
 
