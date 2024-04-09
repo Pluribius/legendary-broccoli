@@ -11,7 +11,6 @@ private:
 	int equipoB;
 	int puntuacionA;
 	int puntuacionB;
-	int pipisaurio[4][30];
 	encuentros(int equipo_A, int puntuacion_A, int equipo_B, int puntuacion_B);
 };
 
