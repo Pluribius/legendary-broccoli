@@ -14,10 +14,20 @@ equipos::equipos(string nombre, bool seccion,int id)
 string equipos::mostrar()
 {
 	string respuesta;
-	if (grupo)respuesta = "|id:" + id_equipo + "| nombre:" + nombre_equipo + "| grupo: A" ;
-    return respuesta;
+	//|id: 5| nombre: Lorem Ipsium | grupo: A
+	respuesta.append("| id: ");
+	respuesta.append(to_string(id_equipo));
+	respuesta.append(" | nombre: " + nombre_equipo);
+	respuesta.append(" | grupo: ");
+	if (grupo)
+	{
+		respuesta.append("A");
+	}
+	else respuesta.append("B");
+	return respuesta;
 }
 
 
 
 
+   
